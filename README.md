@@ -55,12 +55,12 @@ http://localhost:8080/
 
 ## Features Implemented
 
-- ✅ HTTP/1.1 support for GET and HEAD requests
-- ✅ Thread pool with bounded blocking queue (backpressure returns HTTP 503)
-- ✅ Safe path handling to prevent directory traversal attacks
-- ✅ Static file serving with Content-Type and Content-Length headers
-- ✅ Synchronized logging with timestamps (server.log)
-- ✅ Socket read/write timeouts for robustness
+- HTTP/1.1 support for GET and HEAD requests
+- Thread pool with bounded blocking queue (backpressure returns HTTP 503)
+- Safe path handling to prevent directory traversal attacks
+- Static file serving with Content-Type and Content-Length headers
+- Synchronized logging with timestamps (server.log)
+- Socket read/write timeouts for robustness
 
 ## Project Structure
 

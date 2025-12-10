@@ -185,83 +185,51 @@
         </div>
         
         <div>
-            <h2 class="section-title">Current Status</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-title">Project Structure</div>
-                    <p class="feature-desc">All files and folders created with proper organization.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-title">Blocking Queue</div>
-                    <p class="feature-desc">Bounded blocking queue implementation complete with thread-safe operations.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-title">Basic Server</div>
-                    <p class="feature-desc">Minimal server implementation running and serving static files.</p>
-                </div>
-            </div>
-        </div>
-        
-        <div>
-            <h2 class="section-title">Remaining Implementation</h2>
-            <ul class="task-list">
-                <li>
-                    <strong>ThreadPool (threadpool.cpp/h)</strong>
-                    <div>Implement constructor, worker_loop(), submit(), and shutdown() methods.</div>
-                </li>
-                <li>
-                    <strong>HTTP Handler (http.cpp/h)</strong>
-                    <div>Implement parse_request(), build_response(), handle_get(), handle_head(), is_safe_path(), read_file(), and get_content_type().</div>
-                </li>
-                <li>
-                    <strong>Server (server.cpp/h)</strong>
-                    <div>Add thread pool integration, proper HTTP parsing, logging, and full request handling.</div>
-                </li>
-                <li>
-                    <strong>Main (main.cpp)</strong>
-                    <div>Add full command-line argument parsing (--threads, --log) and error handling.</div>
-                </li>
-            </ul>
-        </div>
-        
-        <div>
-            <h2 class="section-title">When Complete</h2>
+            <h2 class="section-title">Implemented Features</h2>
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-title">HTTP/1.1 Support</div>
-                    <p class="feature-desc">Supports GET and HEAD requests with proper HTTP/1.1 responses.</p>
+                    <p class="feature-desc">Fully implemented GET and HEAD request handling with proper HTTP/1.1 responses, status codes, and headers.</p>
                 </div>
                 
                 <div class="feature-card">
                     <div class="feature-title">Thread Pool</div>
-                    <p class="feature-desc">Fixed-size thread pool with bounded blocking queue for efficient request handling.</p>
+                    <p class="feature-desc">Complete thread pool implementation with worker threads, task queue, and proper synchronization using mutexes and condition variables.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-title">Bounded Blocking Queue</div>
+                    <p class="feature-desc">Thread-safe bounded blocking queue with push(), try_push(), and pop() operations for connection management.</p>
                 </div>
                 
                 <div class="feature-card">
                     <div class="feature-title">Backpressure (HTTP 503)</div>
-                    <p class="feature-desc">Returns HTTP 503 Service Unavailable when the request queue is full.</p>
+                    <p class="feature-desc">Returns HTTP 503 Service Unavailable when the request queue is full, preventing resource exhaustion.</p>
                 </div>
                 
                 <div class="feature-card">
                     <div class="feature-title">Path Security</div>
-                    <p class="feature-desc">Safe path handling prevents directory traversal attacks.</p>
+                    <p class="feature-desc">Safe path handling using realpath() to prevent directory traversal attacks (../etc/passwd blocked).</p>
                 </div>
                 
                 <div class="feature-card">
                     <div class="feature-title">Static File Serving</div>
-                    <p class="feature-desc">Serves static files with proper Content-Type and Content-Length headers.</p>
+                    <p class="feature-desc">Serves static files (HTML, CSS, JS, images, PDFs) with proper Content-Type detection and Content-Length headers.</p>
                 </div>
                 
                 <div class="feature-card">
-                    <div class="feature-title">Logging</div>
-                    <p class="feature-desc">Synchronized logging with timestamps to <code>server.log</code>.</p>
+                    <div class="feature-title">Command-Line Arguments</div>
+                    <p class="feature-desc">Full CLI support: <code>--port</code>, <code>--docroot</code>, <code>--threads</code>, <code>--queue</code> with sensible defaults.</p>
                 </div>
                 
                 <div class="feature-card">
-                    <div class="feature-title">Socket Timeouts</div>
-                    <p class="feature-desc">Read/write timeouts for robust connection handling.</p>
+                    <div class="feature-title">Error Handling</div>
+                    <p class="feature-desc">Comprehensive error responses: 400 (Bad Request), 403 (Forbidden), 404 (Not Found), 405 (Method Not Allowed), 503 (Service Unavailable).</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-title">Debug Logging</div>
+                    <p class="feature-desc">Console logging with timestamps showing connection details, file requests, and error conditions.</p>
                 </div>
             </div>
         </div>
