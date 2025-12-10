@@ -110,6 +110,9 @@ HttpResponse HttpHandler::handle_get(const HttpRequest& request, const string& d
     }
 
     string file_path = docroot + request.path;
+
+    if (file_path == "./www/")
+        file_path = "./www/index.html";
     struct stat st;
 
     if (stat(file_path.c_str(), &st) != 0 || S_ISDIR(st.st_mode)) {
