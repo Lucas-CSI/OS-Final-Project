@@ -7,11 +7,14 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
-
 using namespace std;
 
-Server::Server(int port, const string& docroot)
-    : port_(port), docroot_(docroot), server_fd_(-1) {
+Server::Server(int port, const string& docroot, size_t thread_count, size_t queue_size)
+    : port_(port),
+      docroot_(docroot),
+      server_fd_(-1),
+      pool_(thread_count),
+      connection_queue_(queue_size) {
 }
 
 Server::~Server() {
@@ -79,8 +82,31 @@ void Server::start() {
         int client_fd = accept(server_fd_,
                                (sockaddr*)&client_address,
                                &addrlen);
-        if (client_fd >= 0) {
-            handle_client(client_fd);
+
+        if (client_fd < 0)
+            continue;
+
+        char *ip_address_str = inet_ntoa(client_address.sin_addr);
+
+        cout << "[DEBUG] Packet received from " << ip_address_str << endl;
+
+        if (!connection_queue_.try_push(client_fd)) {
+            HttpResponse resp =
+                HttpHandler::handle_error(503, "Service Unavailable");
+
+            cerr << "[ERROR] Connection failed from " << ip_address_str << " failed" << endl;
+
+            resp.headers["Connection"] = "close";
+            string out = HttpHandler::build_response(resp);
+
+            send(client_fd, out.c_str(), out.size(), 0);
+            close(client_fd);
+            continue;
         }
+
+        pool_.submit([this]() {
+            int fd = connection_queue_.pop();
+            handle_client(fd);
+        });
     }
 }

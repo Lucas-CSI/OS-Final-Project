@@ -86,10 +86,10 @@ bool HttpHandler::is_safe_path(const string& path, const string& docroot) {
 
     string full_path = docroot + path;
 
-    if (!realpath(full_path.c_str(), resolved_path)) 
+    if (!realpath(full_path.c_str(), resolved_path) || (!realpath(docroot.c_str(), resolved_root))){
+        cout << "[DEBUG] Unsafe file path: " << full_path << endl;
         return false;
-    if (!realpath(docroot.c_str(), resolved_root)) 
-        return false;
+    }
 
     return string(resolved_path).find(resolved_root) == 0;
 }
@@ -106,17 +106,20 @@ string HttpHandler::read_file(const string& file_path) {
 HttpResponse HttpHandler::handle_get(const HttpRequest& request, const string& docroot) {
     HttpResponse response;
 
+    string file_path = docroot + request.path;
+    cout << "[DEBUG] (GET) File requested: " << file_path << endl;
+
     if (!is_safe_path(request.path, docroot)) {
         return handle_error(403, "Forbidden");
     }
 
-    string file_path = docroot + request.path;
-
-    if (file_path == "./www/")
+    if (file_path == "./www/"){
         file_path = "./www/index.html";
+    }
     struct stat st;
 
     if (stat(file_path.c_str(), &st) != 0 || S_ISDIR(st.st_mode)) {
+        cout << "[DEBUG] File not found: " << file_path << endl;
         return handle_error(404, "Not Found");
     }
 
@@ -133,6 +136,8 @@ HttpResponse HttpHandler::handle_get(const HttpRequest& request, const string& d
 HttpResponse HttpHandler::handle_head(const HttpRequest& request, const string& docroot) {
     HttpResponse response = handle_get(request, docroot);
 
+    cout << "[DEBUG] (HEAD) Meta-data requested: " << docroot << endl;
+
     response.body.clear();
     response.headers["Content-Length"] = "0";
 
@@ -148,6 +153,8 @@ HttpResponse HttpHandler::handle_error(int status_code, const string& message) {
 
     response.headers["Content-Type"] = "text/html";
     response.headers["Content-Length"] = to_string(response.body.size());
+
+    cout << "[DEBUG] Error occurred: " << message << endl;
 
     return response;
 }

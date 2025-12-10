@@ -6,10 +6,12 @@ ThreadPool::ThreadPool(size_t num_threads) : stop(false) {
     for (size_t i = 0; i < num_threads; ++i) {
         workers.emplace_back(&ThreadPool::worker_thread, this);
     }
+    cout << "[DEBUG] Threadpool created" << endl;
 }
 
 // Destructor: joins all threads
 ThreadPool::~ThreadPool() {
+
     {
         // Lock the mutex to safely change the 'stop' flag
         unique_lock<mutex> lock(queue_mutex);
@@ -22,11 +24,14 @@ ThreadPool::~ThreadPool() {
     // Wait for all threads to finish their execution
     for (thread &worker : workers) {
         worker.join();
+        cout << "[DEBUG] Thread destroyed" << endl;
     }
+    cout << "[DEBUG] Thread pool cleaned up" << endl;
 }
 
 // The function that each worker thread runs in a loop
 void ThreadPool::worker_thread() {
+
     while (true) {
         function<void()> task;
 
@@ -50,4 +55,5 @@ void ThreadPool::worker_thread() {
 
         task();
     }
+
 }
