@@ -74,6 +74,7 @@ string HttpHandler::get_content_type(const string& file_path) {
     if (ext == "jpg" || ext == "jpeg") return "image/jpeg";
     if (ext == "gif")  return "image/gif";
     if (ext == "txt")  return "text/plain";
+    if (ext == "pdf") return "application/pdf";
 
     return "application/octet-stream";
 }
