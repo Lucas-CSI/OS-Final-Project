@@ -4,18 +4,6 @@ A multithreaded HTTP/1.1 web server implementation in C++11 with thread pool, bo
 
 ## Build Instructions
 
-### Windows
-1. Install MinGW-w64 or MSYS2 (includes g++ and make)
-2. Open a terminal and navigate to the project directory
-3. Build using:
-   ```bash
-   mingw32-make
-   ```
-   Or if `make` is in your PATH:
-   ```bash
-   make
-   ```
-
 ### Linux/Mac
 1. Ensure g++ and make are installed (usually pre-installed)
 2. Open a terminal and navigate to the project directory
@@ -29,11 +17,6 @@ The Makefile automatically detects your operating system and sets the appropriat
 ## Run Instructions
 
 Start the web server with customizable options:
-
-**Windows:**
-```bash
-.\webserver.exe --port 8080 --docroot ./www --threads 8 --log server.log
-```
 
 **Linux/Mac:**
 ```bash
@@ -102,19 +85,4 @@ ab -n 200 -c 20 http://127.0.0.1:8080/
 ## Requirements
 
 - C++11 compatible compiler (g++ or clang++)
-- pthread library (usually included with compiler)
-- **Windows:** 
-  - MinGW-w64 or MSYS2 (includes g++, make, and Winsock2)
-  - Winsock2 library (ws2_32.lib) - included with MinGW
-- **Linux/Mac:** 
-  - Standard POSIX sockets (included in system)
-
-## Cross-Platform Support
-
-This project is designed to compile and run on both Windows and Linux/Mac. The code uses platform detection (`#ifdef _WIN32`) to automatically:
-- Include the correct socket libraries (Winsock2 on Windows, POSIX on Linux/Mac)
-- Use the correct file system functions
-- Link the appropriate libraries
-
-**Note:** `_WIN32` is defined on both 32-bit and 64-bit Windows, so the code works on all Windows architectures.
-
+- pthread library 
